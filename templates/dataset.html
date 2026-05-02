@@ -1,0 +1,234 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .dataset-hero {
+    border-radius: 22px;
+    padding: clamp(1.1rem, 2.2vw, 1.8rem);
+    background: linear-gradient(150deg, #0a3245 0%, #0f6478 52%, #1ea08a 100%);
+    color: #e8fcff;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dataset-hero::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .dataset-hero h1 {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+  }
+
+  .dataset-hero p {
+    margin: 0.75rem 0 0;
+    max-width: 72ch;
+    line-height: 1.72;
+    color: #d6f6fc;
+  }
+
+  .dataset-media {
+    margin-top: 1rem;
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(11, 60, 77, 0.14);
+    box-shadow: var(--shadow);
+  }
+
+  .facts-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+  }
+
+  .fact-card {
+    border-radius: 16px;
+    background: #ffffffe6;
+    border: 1px solid rgba(11, 58, 75, 0.1);
+    box-shadow: 0 14px 32px rgba(16, 59, 78, 0.12);
+    padding: 0.95rem;
+  }
+
+  .fact-card h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #35566a;
+  }
+
+  .fact-card p {
+    margin: 0.34rem 0 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.26rem;
+    color: #0e3a50;
+    font-weight: 700;
+  }
+
+  .dataset-panel {
+    margin-top: 1rem;
+    border-radius: 18px;
+    background: #ffffffde;
+    border: 1px solid rgba(11, 57, 74, 0.1);
+    box-shadow: var(--shadow);
+    padding: 1rem;
+  }
+
+  .dataset-panel h2 {
+    margin: 0 0 0.6rem;
+    font-family: "Space Grotesk", sans-serif;
+    color: #10364a;
+  }
+
+  .dataset-panel p {
+    margin: 0;
+    line-height: 1.75;
+    color: #355668;
+  }
+
+  .dataset-panel ul {
+    margin: 0.7rem 0 0;
+    padding-left: 1rem;
+    color: #2d5164;
+  }
+
+  .dataset-panel li {
+    margin-bottom: 0.35rem;
+  }
+
+  .meta-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.8rem;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+
+  .meta-table th,
+  .meta-table td {
+    padding: 0.62rem;
+    border-bottom: 1px solid rgba(12, 55, 73, 0.1);
+    text-align: left;
+    font-size: 0.92rem;
+    color: #2f4f61;
+  }
+
+  .meta-table th {
+    width: 220px;
+    color: #10364a;
+    background: rgba(10, 66, 89, 0.07);
+    font-weight: 700;
+  }
+
+  .citation {
+    margin-top: 0.9rem;
+    border-radius: 12px;
+    background: rgba(13, 91, 112, 0.09);
+    border: 1px solid rgba(15, 74, 95, 0.18);
+    padding: 0.75rem;
+    color: #23495d;
+    line-height: 1.65;
+  }
+
+  @media (max-width: 960px) {
+    .facts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .facts-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .meta-table th,
+    .meta-table td {
+      display: block;
+      width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="dataset-hero">
+  <h1>Dataset Used: UCI Chronic Kidney Disease (CKD)</h1>
+  <p>
+    This project uses the CKD dataset from the UCI Machine Learning Repository. It is a structured
+    medical dataset designed for classification of chronic kidney disease risk using routine clinical
+    parameters. The summary below is based on UCI dataset metadata and variable documentation.
+  </p>
+</section>
+
+<img class="dataset-media" src="{{ url_for('static', filename='visuals/uci_dataset.svg') }}" alt="UCI CKD dataset overview visual">
+
+<section class="facts-grid">
+  <article class="fact-card">
+    <h3>Instances</h3>
+    <p>400</p>
+  </article>
+  <article class="fact-card">
+    <h3>Features</h3>
+    <p>24</p>
+  </article>
+  <article class="fact-card">
+    <h3>Task</h3>
+    <p>Classification</p>
+  </article>
+  <article class="fact-card">
+    <h3>Class Labels</h3>
+    <p>ckd / notckd</p>
+  </article>
+</section>
+
+<section class="dataset-panel">
+  <h2>Why This Dataset Was Chosen</h2>
+  <p>
+    The UCI CKD dataset is appropriate for this major project because it contains clinically meaningful
+    variables used in nephrology-related screening and supports supervised learning for binary prediction.
+    It includes both numeric and categorical fields, making it practical for demonstrating preprocessing,
+    encoding, model training, and deployment in a real web workflow.
+  </p>
+  <ul>
+    <li>Captures blood chemistry, urine indicators, and comorbidity markers.</li>
+    <li>Matches real-world medical tabular data conditions with missing values.</li>
+    <li>Widely referenced educational benchmark for CKD classification tasks.</li>
+  </ul>
+</section>
+
+<section class="dataset-panel">
+  <h2>Key UCI Metadata (Summarized)</h2>
+  <table class="meta-table">
+    <tr><th>Repository</th><td>UCI Machine Learning Repository</td></tr>
+    <tr><th>Dataset Name</th><td>Chronic Kidney Disease</td></tr>
+    <tr><th>Dataset ID</th><td>336</td></tr>
+    <tr><th>Donation Date</th><td>2015-07-02</td></tr>
+    <tr><th>Dataset Characteristics</th><td>Multivariate</td></tr>
+    <tr><th>Has Missing Values</th><td>Yes</td></tr>
+    <tr><th>Variables</th><td>24 features + 1 class label (25 total columns)</td></tr>
+    <tr><th>Data Types</th><td>Numeric and nominal attributes</td></tr>
+    <tr><th>Creators</th><td>L. Rubini, P. Soundarapandian, P. Eswaran</td></tr>
+    <tr><th>DOI</th><td>10.24432/C5G020</td></tr>
+    <tr><th>License</th><td>CC BY 4.0</td></tr>
+  </table>
+  <div class="citation">
+    Suggested citation: Rubini, L., Soundarapandian, P., &amp; Eswaran, P. (2015). Chronic Kidney Disease [Dataset].
+    UCI Machine Learning Repository. https://doi.org/10.24432/C5G020
+  </div>
+</section>
+
+<section class="dataset-panel">
+  <h2>How It Is Used in This Project</h2>
+  <ul>
+    <li>Selected feature subset is aligned with form inputs used on the screening page.</li>
+    <li>Categorical attributes are encoded into numeric representations before model fitting.</li>
+    <li>Missing and inconsistent entries are handled during preprocessing before training.</li>
+    <li>Final model output is exposed through Flask for interactive risk prediction.</li>
+  </ul>
+</section>
+{% endblock %}

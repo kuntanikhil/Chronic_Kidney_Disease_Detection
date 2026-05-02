@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-label="UCI CKD Dataset Visual">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#102f43"/>
+      <stop offset="100%" stop-color="#118c82"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="420" fill="url(#bg)"/>
+  <g fill="#eafcff" font-family="Segoe UI, Arial, sans-serif">
+    <text x="38" y="56" font-size="34" font-weight="700">UCI CKD Dataset Snapshot</text>
+    <text x="38" y="88" font-size="18" fill="#cbeef6">Structured dataset for chronic kidney disease classification</text>
+  </g>
+  <g>
+    <rect x="50" y="130" width="180" height="95" rx="14" fill="#e8fbff"/>
+    <rect x="250" y="130" width="180" height="95" rx="14" fill="#e8fbff"/>
+    <rect x="450" y="130" width="180" height="95" rx="14" fill="#e8fbff"/>
+    <rect x="650" y="130" width="200" height="95" rx="14" fill="#e8fbff"/>
+    <text x="78" y="168" fill="#16465d" font-size="16" font-family="Segoe UI, Arial" font-weight="700">Instances</text>
+    <text x="78" y="198" fill="#0f3548" font-size="29" font-family="Segoe UI, Arial" font-weight="700">400</text>
+    <text x="278" y="168" fill="#16465d" font-size="16" font-family="Segoe UI, Arial" font-weight="700">Features</text>
+    <text x="278" y="198" fill="#0f3548" font-size="29" font-family="Segoe UI, Arial" font-weight="700">24</text>
+    <text x="478" y="168" fill="#16465d" font-size="16" font-family="Segoe UI, Arial" font-weight="700">Task</text>
+    <text x="478" y="198" fill="#0f3548" font-size="22" font-family="Segoe UI, Arial" font-weight="700">Classification</text>
+    <text x="678" y="168" fill="#16465d" font-size="16" font-family="Segoe UI, Arial" font-weight="700">Classes</text>
+    <text x="678" y="198" fill="#0f3548" font-size="24" font-family="Segoe UI, Arial" font-weight="700">ckd / notckd</text>
+  </g>
+  <g>
+    <rect x="50" y="258" width="800" height="116" rx="16" fill="#ffffff22" stroke="#dff8ff"/>
+    <text x="76" y="298" fill="#e8fcff" font-size="18" font-family="Segoe UI, Arial" font-weight="600">Includes numeric and nominal clinical markers with missing values</text>
+    <text x="76" y="330" fill="#d2f1f8" font-size="16" font-family="Segoe UI, Arial">Age, blood pressure, albumin, sugar, blood urea, creatinine, hypertension, diabetes, anemia, and more.</text>
+  </g>
+  <circle cx="850" cy="56" r="11" fill="#ffd3a2">
+    <animate attributeName="r" values="11;14;11" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+</svg>

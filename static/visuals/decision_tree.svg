@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380" role="img" aria-label="Decision Tree Visual">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#143247"/>
+      <stop offset="100%" stop-color="#0ea08a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="380" fill="url(#bg3)"/>
+  <g stroke="#e6fcff" stroke-width="3" fill="none">
+    <path d="M400 70 L400 135"/>
+    <path d="M400 135 L250 205"/>
+    <path d="M400 135 L550 205"/>
+    <path d="M250 205 L170 285"/>
+    <path d="M250 205 L330 285"/>
+    <path d="M550 205 L470 285"/>
+    <path d="M550 205 L630 285"/>
+  </g>
+  <g fill="#e6fcff">
+    <rect x="360" y="46" width="80" height="42" rx="10"/>
+    <rect x="210" y="184" width="80" height="42" rx="10" opacity="0.95"/>
+    <rect x="510" y="184" width="80" height="42" rx="10" opacity="0.95"/>
+    <circle cx="170" cy="285" r="14"><animate attributeName="fill-opacity" values="1;0.65;1" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="330" cy="285" r="14"><animate attributeName="fill-opacity" values="1;0.65;1" dur="2.3s" repeatCount="indefinite"/></circle>
+    <circle cx="470" cy="285" r="14"><animate attributeName="fill-opacity" values="1;0.65;1" dur="2.1s" repeatCount="indefinite"/></circle>
+    <circle cx="630" cy="285" r="14"><animate attributeName="fill-opacity" values="1;0.65;1" dur="2.4s" repeatCount="indefinite"/></circle>
+  </g>
+  <text x="36" y="46" fill="#e7fbff" font-size="32" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Decision Tree Baseline</text>
+  <text x="36" y="78" fill="#c8ebf4" font-size="18" font-family="Segoe UI, Arial, sans-serif">Readable split logic for clinical interpretability</text>
+</svg>

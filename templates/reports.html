@@ -1,0 +1,138 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .reports-card {
+    border-radius: 20px;
+    border: 1px solid rgba(13, 57, 76, 0.1);
+    box-shadow: var(--shadow);
+    background: #ffffffe8;
+    padding: clamp(1rem, 2.2vw, 1.4rem);
+  }
+
+  .reports-head h1 {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    color: #10364a;
+  }
+
+  .reports-head p {
+    margin: 0.5rem 0 0.9rem;
+    color: #3a5868;
+  }
+
+  .reports-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .reports-table th,
+  .reports-table td {
+    padding: 0.72rem;
+    border-bottom: 1px solid rgba(9, 55, 73, 0.1);
+    text-align: left;
+    font-size: 0.92rem;
+    color: #2f4f61;
+  }
+
+  .reports-table th {
+    background: rgba(8, 65, 87, 0.08);
+    color: #12384a;
+    font-weight: 700;
+  }
+
+  .status-pill {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.23rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .status-risk {
+    background: rgba(231, 96, 59, 0.14);
+    color: #863116;
+  }
+
+  .status-safe {
+    background: rgba(29, 155, 92, 0.14);
+    color: #0f5a34;
+  }
+
+  .download-form {
+    margin: 0;
+  }
+
+  @media (max-width: 720px) {
+    .reports-table,
+    .reports-table thead,
+    .reports-table tbody,
+    .reports-table tr,
+    .reports-table th,
+    .reports-table td {
+      display: block;
+      width: 100%;
+    }
+
+    .reports-table thead {
+      display: none;
+    }
+
+    .reports-table tr {
+      padding: 0.6rem;
+      border-bottom: 1px solid rgba(9, 55, 73, 0.1);
+    }
+
+    .reports-table td {
+      border: 0;
+      padding: 0.3rem 0;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="reports-card">
+  <div class="reports-head">
+    <h1>My Saved Reports</h1>
+    <p>Each prediction is securely stored and can be downloaded again for consultation.</p>
+  </div>
+
+  {% if reports %}
+    <table class="reports-table">
+      <thead>
+        <tr>
+          <th>Report ID</th>
+          <th>Prediction</th>
+          <th>Generated At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for report in reports %}
+          <tr>
+            <td>#{{ report.id }}</td>
+            <td>
+              {% if report.prediction_value == 1 %}
+                <span class="status-pill status-risk">Higher Risk</span>
+              {% else %}
+                <span class="status-pill status-safe">Lower Risk</span>
+              {% endif %}
+            </td>
+            <td>{{ report.created_at }}</td>
+            <td>
+              <form class="download-form" action="{{ url_for('downloadKidneyReport') }}" method="POST">
+                <input type="hidden" name="report_id" value="{{ report.id }}">
+                <button type="submit" class="button-secondary">Download PDF</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p class="muted">No reports available yet. Run a new screening to generate your first report.</p>
+    <a class="button-primary" href="{{ url_for('kidneyPage') }}">Start Screening</a>
+  {% endif %}
+</section>
+{% endblock %}

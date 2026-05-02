@@ -1,0 +1,300 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .algo-header {
+    border-radius: 22px;
+    padding: clamp(1.1rem, 2.2vw, 1.8rem);
+    background: linear-gradient(150deg, #0a3143 0%, #0f6075 50%, #20a08a 100%);
+    color: #e6fbff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .algo-header::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 220px;
+    height: 220px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+  }
+
+  .algo-header h1 {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+  }
+
+  .algo-header p {
+    margin: 0.7rem 0 0;
+    max-width: 68ch;
+    color: #d7f7fc;
+    line-height: 1.7;
+  }
+
+  .algo-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+
+  .algo-card {
+    border-radius: 18px;
+    background: #ffffffe8;
+    border: 1px solid rgba(7, 55, 74, 0.1);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    animation: pulseIn 0.6s ease;
+  }
+
+  .algo-media {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+  }
+
+  .algo-content {
+    padding: 1rem;
+  }
+
+  .algo-content h2 {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.24rem;
+    color: #10384b;
+  }
+
+  .algo-tag {
+    display: inline-block;
+    margin-top: 0.45rem;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(0, 159, 143, 0.14);
+    color: #066057;
+  }
+
+  .algo-content p {
+    margin: 0.75rem 0 0;
+    color: #355567;
+    line-height: 1.66;
+  }
+
+  .algo-content ul {
+    margin: 0.65rem 0 0;
+    padding-left: 1rem;
+    color: #2a4d60;
+  }
+
+  .algo-content li {
+    margin-bottom: 0.33rem;
+  }
+
+  .flow-panel {
+    margin-top: 1rem;
+    border-radius: 18px;
+    background: #ffffffdb;
+    border: 1px solid rgba(12, 52, 73, 0.1);
+    padding: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  .flow-panel h2 {
+    margin: 0 0 0.6rem;
+    font-family: "Space Grotesk", sans-serif;
+  }
+
+  .flow-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.7rem;
+  }
+
+  .flow-step {
+    border-radius: 12px;
+    border: 1px solid rgba(13, 62, 83, 0.12);
+    background: #fff;
+    padding: 0.75rem;
+    font-size: 0.92rem;
+    color: #274759;
+    position: relative;
+  }
+
+  .flow-step strong {
+    color: #0f3a4e;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  @keyframes pulseIn {
+    from {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .algo-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .flow-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .flow-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .sticky-screening-btn {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1200;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #009f8f, #007f73);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 12px 30px rgba(0, 109, 99, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .sticky-screening-btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  @media (max-width: 620px) {
+    .sticky-screening-btn {
+      right: 0.75rem;
+      left: 0.75rem;
+      justify-content: center;
+      border-radius: 14px;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="algo-header">
+  <h1>Algorithms and Their Purpose</h1>
+  <p>
+    This page explains how each algorithm was used in the project pipeline, why it was selected,
+    and what role it plays in kidney disease risk prediction.
+  </p>
+</section>
+
+<section class="algo-grid">
+  <article class="algo-card">
+    <img class="algo-media" src="{{ url_for('static', filename='visuals/random_forest.svg') }}" alt="Random forest visual">
+    <div class="algo-content">
+      <h2>Random Forest Classifier</h2>
+      <span class="algo-tag">Primary Prediction Model</span>
+      <p>
+        Random Forest was selected for strong performance on mixed tabular health attributes and
+        for robustness against overfitting by averaging many decision trees.
+      </p>
+      <ul>
+        <li>Handles nonlinear relationships well.</li>
+        <li>Works reliably with noisy clinical data.</li>
+        <li>Gives stable classification for CKD risk output.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="algo-card">
+    <img class="algo-media" src="{{ url_for('static', filename='visuals/xgboost.svg') }}" alt="XGBoost visual">
+    <div class="algo-content">
+      <h2>XGBoost (Experimental Track)</h2>
+      <span class="algo-tag">Accuracy Optimization</span>
+      <p>
+        XGBoost was considered during model experimentation to capture complex boundaries through
+        gradient boosting and improve precision on difficult samples.
+      </p>
+      <ul>
+        <li>Boosted trees correct previous model mistakes.</li>
+        <li>Effective for structured medical datasets.</li>
+        <li>Useful for benchmarking against Random Forest.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="algo-card">
+    <img class="algo-media" src="{{ url_for('static', filename='visuals/decision_tree.svg') }}" alt="Decision tree visual">
+    <div class="algo-content">
+      <h2>Decision Tree (Baseline Model)</h2>
+      <span class="algo-tag">Interpretability Reference</span>
+      <p>
+        Decision Tree helps as a transparent baseline to understand feature splits and compare
+        explainability against ensemble methods.
+      </p>
+      <ul>
+        <li>Easy to interpret and visualize.</li>
+        <li>Supports quick baseline performance checks.</li>
+        <li>Highlights important clinical split rules.</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="algo-card">
+    <img class="algo-media" src="{{ url_for('static', filename='visuals/pipeline.svg') }}" alt="Model pipeline visual">
+    <div class="algo-content">
+      <h2>Pipeline Perspective</h2>
+      <span class="algo-tag">End-to-End Purpose</span>
+      <p>
+        The project combines data cleaning, feature encoding, model comparison, and production-serving
+        to provide a practical major-project deployment flow in Flask.
+      </p>
+      <ul>
+        <li>Input collection through validated form fields.</li>
+        <li>Feature vector alignment to training schema.</li>
+        <li>Immediate prediction rendering in a user-friendly result view.</li>
+      </ul>
+    </div>
+  </article>
+</section>
+
+<section class="flow-panel">
+  <h2>How Each Algorithm Is Used in Workflow</h2>
+  <div class="flow-row">
+    <article class="flow-step">
+      <strong>1. Data Preparation</strong>
+      Categorical health fields are encoded into model-friendly numeric form.
+    </article>
+    <article class="flow-step">
+      <strong>2. Model Training</strong>
+      Random Forest and other candidate algorithms are trained and compared.
+    </article>
+    <article class="flow-step">
+      <strong>3. Model Selection</strong>
+      Best-performing model is selected for reliability on CKD classification.
+    </article>
+    <article class="flow-step">
+      <strong>4. Deployment</strong>
+      Saved model is loaded in Flask and used by the /predict endpoint.
+    </article>
+  </div>
+</section>
+
+<a class="sticky-screening-btn" href="{{ url_for('kidneyPage') }}">
+  <span>Back to Screening</span>
+</a>
+{% endblock %}

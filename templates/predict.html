@@ -1,0 +1,129 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .result-wrap {
+    display: grid;
+    place-items: center;
+    min-height: 62vh;
+  }
+
+  .result-card {
+    width: min(760px, 100%);
+    border-radius: 24px;
+    border: 1px solid rgba(10, 62, 82, 0.1);
+    box-shadow: var(--shadow);
+    background: #ffffffe6;
+    overflow: hidden;
+  }
+
+  .result-head {
+    padding: 1.2rem 1.2rem 0.7rem;
+  }
+
+  .status-chip {
+    display: inline-block;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+
+  .status-risk {
+    background: rgba(231, 96, 59, 0.17);
+    color: #8f3116;
+  }
+
+  .status-safe {
+    background: rgba(29, 155, 92, 0.16);
+    color: #0f5f38;
+  }
+
+  .result-title {
+    margin: 0.7rem 0 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+    color: #0d3244;
+  }
+
+  .result-body {
+    padding: 0 1.2rem 1.2rem;
+    color: #345465;
+    line-height: 1.75;
+  }
+
+  .result-note {
+    border-radius: 14px;
+    padding: 0.8rem 0.9rem;
+    border: 1px solid rgba(15, 70, 92, 0.16);
+    background: rgba(8, 93, 114, 0.06);
+    margin-top: 0.9rem;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    margin-top: 1.1rem;
+  }
+
+  .report-form {
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .action-row .button-primary,
+    .action-row .button-secondary {
+      width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="result-wrap">
+  <article class="result-card">
+    <div class="result-head">
+      {% if pred == 1 %}
+        <span class="status-chip status-risk">Higher Risk Pattern</span>
+        <h1 class="result-title">Kidney Disease Risk Detected</h1>
+      {% else %}
+        <span class="status-chip status-safe">Lower Risk Pattern</span>
+        <h1 class="result-title">Healthy Pattern Detected</h1>
+      {% endif %}
+    </div>
+
+    <div class="result-body">
+      {% if pred == 1 %}
+        <p>
+          The entered values show a pattern associated with chronic kidney disease.
+          This is a screening output, not a clinical diagnosis.
+        </p>
+        <div class="result-note">
+          Suggested next step: consult a qualified doctor and review kidney function tests as early as possible.
+        </div>
+      {% else %}
+        <p>
+          The entered values are closer to a healthy profile for this model.
+          Continue regular checkups and maintain kidney-friendly habits.
+        </p>
+        <div class="result-note">
+          Prevention tip: stay hydrated, monitor blood pressure, and reduce high-sodium food intake.
+        </div>
+      {% endif %}
+
+      <div class="action-row">
+        {% if report_id %}
+          <form class="report-form" action="{{ url_for('downloadKidneyReport') }}" method="POST">
+            <input type="hidden" name="report_id" value="{{ report_id }}">
+            <button type="submit" class="button-primary">Download Consultation Report (PDF)</button>
+          </form>
+        {% endif %}
+        <a class="button-secondary" href="{{ url_for('reportsPage') }}">View Saved Reports</a>
+        <a class="button-primary" href="{{ url_for('kidneyPage') }}">Try Another Prediction</a>
+        <a class="button-secondary" href="https://www.who.int/" target="_blank" rel="noopener noreferrer">Read WHO Guidance</a>
+        <a class="button-secondary" href="{{ url_for('home') }}">Back to Home</a>
+      </div>
+    </div>
+  </article>
+</section>
+{% endblock %}

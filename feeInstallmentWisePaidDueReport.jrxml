@@ -1,0 +1,1082 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="feeInstallmentWisePaidDueReport" pageWidth="10000" pageHeight="1100" orientation="Landscape" columnWidth="9984" leftMargin="6" rightMargin="10" topMargin="24" bottomMargin="10" isSummaryWithPageHeaderAndFooter="true" isFloatColumnFooter="true" uuid="c183226c-99c8-4289-b338-8e3a208d780a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="ireport.zoom" value="0.8264462809917368"/>
+	<property name="ireport.x" value="43"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.freeze.row" value="7"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.text.truncate.at.char=true" value="true"/>
+	<property name="net.sf.jasperreports.legacy.element.stretch.enabled" value="true"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<style name="default" isDefault="true"/>
+	<parameter name="branchLogo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="format" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="branchId" class="java.lang.Long"/>
+	<parameter name="classId" class="java.lang.String"/>
+	<parameter name="sectionId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sessionId" class="java.lang.Long"/>
+	<parameter name="noDueStatus" class="java.lang.Boolean"/>
+	<parameter name="pendingDues" class="java.lang.Boolean"/>
+	<parameter name="p1Cond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{classId}) ? "" : " AND AST.CLASS_ID in( "+ $P{classId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p2Cond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{sectionId}) ? "" : " AND AST.SECTION_ID in( "+ $P{sectionId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p3Cond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[(($P{noDueStatus} != null && $P{noDueStatus})||($P{pendingDues} != null && $P{pendingDues}) ? "WITH CTE AS ( " : "  " )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p4Cond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[($P{noDueStatus} != null && $P{noDueStatus} ? " ) SELECT CTE.*  FROM CTE  LEFT JOIN (SELECT  CTE.STUDENT_ID, sum(CTE.DUE) as finalDue from CTE group by CTE.STUDENT_ID) due on CTE.STUDENT_ID=due.STUDENT_ID  WHERE due.finalDue =0 " : "  " )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p5Cond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[($P{pendingDues} != null && $P{pendingDues} ? " ) SELECT CTE.*  FROM CTE  LEFT JOIN (SELECT  CTE.STUDENT_ID, sum(CTE.DUE) as finalDue from CTE group by CTE.STUDENT_ID) due on CTE.STUDENT_ID=due.STUDENT_ID  WHERE due.finalDue >0 " : "  " )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="academicSessionId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="status" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sessionNames" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="feeTypeIdCond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{feeTypeId}) ? "" : " AND FD.FEE_TYPE_ID in( "+ $P{feeTypeId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="feeTypeIdCond2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{feeTypeId}) ? "" : " AND FI.fee_type_id in( "+ $P{feeTypeId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="feeTypeId" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="feeInstallmentsName" class="java.lang.String"/>
+	<parameter name="installmentIdCond" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{installmentId}) ? "" : " AND FSI.FEE_SCHEDULE_INSTALLMENT_ID in( "+ $P{installmentId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="installmentIdCond2" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{installmentId}) ? "" : " AND FI.FEE_SCHEDULE_INSTALLMENT_ID in( "+ $P{installmentId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="installmentIdCond3" class="java.lang.String">
+		<defaultValueExpression><![CDATA[("'-1'".equals($P{installmentId}) ? "" : " AND FD.FEE_SCHEDULE_INSTALLMENT_ID in( "+ $P{installmentId} +")" )]]></defaultValueExpression>
+	</parameter>
+	<parameter name="installmentId" class="java.lang.String"/>
+	<parameter name="classNames" class="java.lang.String"/>
+	<parameter name="generatedBy" class="java.lang.String"/>
+	<parameter name="schoolName" class="java.lang.String"/>
+	<parameter name="schoolAddress" class="java.lang.String"/>
+	<parameter name="feeTypesName" class="java.lang.String"/>
+	<parameter name="timezone" class="java.lang.String"/>
+	<parameter name="generatedOn" class="java.lang.String"/>
+	<parameter name="mantissaLength" class="java.lang.String"/>
+	<parameter name="orderBy" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="orderByVal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[(
+            "'class'".equals($P{orderBy})
+            ? "ORDER BY CL.SEQ_NO,SC.SECTION_ID"
+            : ("'studentName'".equals($P{orderBy})
+                ? "ORDER BY STUDENT_NAME,ST.ADMISSION_NO,ACS.START_DATE,CL.SEQ_NO,SC.NAME,2,FSI.FEE_SCHEDULE_INSTALLMENT_ID"
+                : "ORDER BY CASE WHEN ST.ADMISSION_NO REGEXP '^[0-9]+$' THEN 1 ELSE 2 END, CAST(ST.ADMISSION_NO AS UNSIGNED) ASC,ST.ADMISSION_NO ASC")
+        )]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[$P!{p3Cond}
+    SELECT A.ADM_NO,
+	A.STUDENT_NAME,A.PRIMARY_CONTACT,A.SECTION_NAME,A.CLASS_SECTION,A.FEE_TYPE_NAME,A.BILLED,A.PAID,A.FEE_SCHEDULE_INSTALLMENT_ID,IFNULL(A.INSTALLMENT_NAME,'NA') AS INSTALLMENT_NAME,
+	A.DUE,A.FEE_TYPE_ID,A.STUDENT_ID,A.STATUS,A.DURATION,A.CLASS_SEQ_NO,A.RECEIPT_NUMBER,A.FINE_AMOUNT,A.DUE_FINE_AMOUNT,A.CBF_FINE_AMOUNT, A.CONCESSION_AMOUNT,A.PAYMENT_DATE,(@r:=@r+1) AS SEQ,A.FEE_CATEGORY ,A.PRIMARY_CONTACT_NUMBER,
+	IF(@STD_ID<>A.CLASS_ID, A.FINE_AMOUNT, 0) AS PAID_FINE,IF(@STD_ID<>A.CLASS_ID, A.DUE_FINE_AMOUNT, 0) AS DUE_FINE
+	,IF(@STD_ID<>A.CLASS_ID, A.CBF_FINE_AMOUNT, 0) AS CBF_FINE,@STD_ID:=IF(@STD_ID<>A.CLASS_ID, A.STUDENT_ID,@STD_ID),
+	CONVERT(IF(@ADM_ID<>A.CLASS_ID, @S_NO:=@S_NO+1, @S_NO),UNSIGNED) AS S_NO,
+	@ADM_ID:=IF(@ADM_ID<>A.CLASS_ID,A.CLASS_ID,@ADM_ID),A.CLASS_NAME as CLASS_NAME
+	from(
+		SELECT
+		ST.ADMISSION_NO AS ADM_NO ,
+		CONCAT_WS(' ', ST.FIRST_NAME ,ST.MIDDLE_NAME, ST.LAST_NAME)AS STUDENT_NAME,
+		CONCAT_WS(' ',PR.FIRST_NAME,PR.MIDDLE_NAME,PR.LAST_NAME) AS PRIMARY_CONTACT,
+		CL.NAME as CLASS_NAME,SC.NAME as SECTION_NAME,CL.CLASS_ID as CLASS_ID,
+		CONCAT(CL.NAME,'-' ,SC.NAME) AS CLASS_SECTION,
+		(CASE WHEN ACS.IF_CURRENT = 0 THEN CONCAT(FSI.NAME ,'(',ACS.DURATION , ')') ELSE FSI.NAME END ) AS INSTALLMENT_NAME,
+		FT.FEE_TYPE_NAME AS FEE_TYPE_NAME,
+		FSI.FEE_SCHEDULE_INSTALLMENT_ID as FEE_SCHEDULE_INSTALLMENT_ID,
+		SUM(L.ORIGINAL_DUE-L.CONCESSION) AS BILLED,
+		SUM((L.ORIGINAL_DUE-L.BALANCE-L.CONCESSION)) as PAID,
+		SUM(L.BALANCE) as DUE,
+		FT.FEE_TYPE_ID,AST.STUDENT_ID,AST.STATUS ,ACS.DURATION ,CL.SEQ_NO AS CLASS_SEQ_NO,
+		B.RECEIPT_NUMBER,
+		IFNULL(D.fineAmount,0) AS FINE_AMOUNT,
+		IFNULL(FINE.FINE,0) AS DUE_FINE_AMOUNT,
+		IFNULL(CBF.CHEQUE_BOUNCE_FINE,0) AS CBF_FINE_AMOUNT,
+		IFNULL(C.concessionAmount,0) AS CONCESSION_AMOUNT,
+		B.PAYMENT_DATE,
+		SCCT.PRIMARY_PHONE AS PRIMARY_CONTACT_NUMBER,
+		 FCAT.FEE_CATEGORY_NAME AS FEE_CATEGORY
+		FROM LEDGER L
+		JOIN FEE_DUE FD ON L.FEE_DUE_ID =  FD.FEE_DUE_ID
+		LEFT JOIN FEE_SCHEDULE_INSTALLMENT FSI ON FSI.FEE_SCHEDULE_INSTALLMENT_ID=L.FEE_SCHEDULE_INSTALLMENT_ID
+		JOIN FEE_TYPE FT ON FT.FEE_TYPE_ID=L.FEE_TYPE_ID
+		JOIN ACADEMIC_STUDENT AST ON (AST.STUDENT_ID = L.STUDENT_ID) AND (L.BRANCH_ID = AST.BRANCH_ID) AND (L.ACADEMIC_SESSION_ID = AST.ACADEMIC_SESSION_ID)
+		JOIN STUDENT ST ON (ST.STUDENT_ID = L.STUDENT_ID)  AND ( ST.BRANCH_ID = L.BRANCH_ID )
+		JOIN (
+			SELECT ACS.*
+     		FROM ACADEMIC_SESSION ACS
+      		JOIN (
+      			SELECT ACADEMIC_SESSION_ID from ACADEMIC_SESSION where ACADEMIC_SESSION_ID in($P!{academicSessionId})
+      		  ) T ON T.ACADEMIC_SESSION_ID = ACS.ACADEMIC_SESSION_ID
+      		 ) ACS on ACS.ACADEMIC_SESSION_ID = AST.ACADEMIC_SESSION_ID
+		JOIN CLASS CL on (AST.CLASS_ID  = CL.CLASS_ID ) and (AST.BRANCH_ID  = CL.BRANCH_ID )  AND (AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID )
+		JOIN SECTION SC on  (AST.SECTION_ID = SC.SECTION_ID ) and (AST.BRANCH_ID = SC.BRANCH_ID) AND (AST.ACADEMIC_SESSION_ID = SC.ACADEMIC_SESSION_ID )
+		LEFT JOIN STUDENT_RELATION SR ON (ST.PRIMARY_CONTACT_ID=SR.STUDENT_RELATION_ID) AND ( ST.BRANCH_ID = SR.BRANCH_ID )
+		LEFT JOIN PARENT PR ON (SR.PARENT_ID = PR.PARENT_ID) AND (SR.BRANCH_ID = PR.BRANCH_ID)
+		LEFT JOIN STUDENT_CONTACT SCCT ON (SCCT.STUDENT_CONTACT_ID = PR.STUDENT_CONTACT_ID) AND (SCCT.BRANCH_ID = PR.BRANCH_ID)
+		LEFT JOIN FEE_CATEGORY_STUDENT FCATS ON  (FCATS.STUDENT_ID = FD.STUDENT_ID) AND (FCATS.BRANCH_ID = FD.BRANCH_ID ) AND (FCATS.ACADEMIC_SESSION_ID = FD.ACADEMIC_SESSION_ID) AND  FCATS.STATUS IN ("Active")
+		LEFT JOIN FEE_CATEGORY FCAT ON (FCAT.FEE_CATEGORY_ID = FCATS.FEE_CATEGORY_ID) AND (FCATS.BRANCH_ID = FCAT.BRANCH_ID ) AND (FCATS.ACADEMIC_SESSION_ID = FCAT.ACADEMIC_SESSION_ID)
+		LEFT JOIN  (
+			SELECT FT.FEE_TYPE_ID,CL.CLASS_ID,FD.FEE_SCHEDULE_INSTALLMENT_ID,GROUP_CONCAT(DISTINCT FRLI.RECEIPT_NUMBER order by FRLI.RECEIPT_NUMBER SEPARATOR ', ') as RECEIPT_NUMBER,
+	    	GROUP_CONCAT(DISTINCT DATE_FORMAT(CONVERT_TZ(IFNULL(PAYMENT_DATE,R.RECEIPT_DATE),'Asia/Kolkata','$P!{timezone}'),'%d-%b-%Y') order by CLI.PAYMENT_DATE SEPARATOR ', ') as PAYMENT_DATE,
+	   		FRLI.STUDENT_ID
+		    FROM FEE_RECEIPT R
+		    JOIN FEE_RECEIPT_LINE_ITEM FRLI ON FRLI.RECEIPT_ID=R.RECEIPT_ID
+		    JOIN FEE_DUE FD ON FD.FEE_DUE_ID=FRLI.FEE_DUE_ID
+		    JOIN FEE_TYPE FT ON FT.FEE_TYPE_ID=FD.FEE_TYPE_ID
+		    JOIN ACADEMIC_STUDENT AST ON AST.STUDENT_ID = FD.STUDENT_ID AND AST.BRANCH_ID = FD.BRANCH_ID AND AST.ACADEMIC_SESSION_ID = FD.ACADEMIC_SESSION_ID
+		    JOIN CLASS CL ON AST.CLASS_ID = CL.CLASS_ID AND AST.BRANCH_ID = CL.BRANCH_ID AND AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+		    LEFT JOIN COLLECTION CLI ON (CLI.COLLECTION_ID = R.COLLECTION_ID)  AND (CLI.DUES_ACADEMIC_SESSION_ID = R.DUES_ACADEMIC_SESSION_ID) AND (CLI.BRANCH_ID = R.BRANCH_ID)
+		    WHERE FD.BRANCH_ID=$P!{branchId}
+		    AND FD.ACADEMIC_SESSION_ID in ($P!{academicSessionId})
+		    AND COLLECTION_TYPE not in ('FEE_TYPE_BASED_FINE','CHEQUE_BOUNCED_FINE','FINE_WRITE_OFF','INSTALLMENT_BASED_FINE')
+		    AND (R.STATUS  = 'Active' or (R.STATUS  = 'Fee_Category_Change' AND R.RECEIPT_TYPE = 'Fee_Category_Change_Partially_Reallocated'))
+		    GROUP BY FRLI.DUES_ACADEMIC_SESSION_ID,CL.CLASS_ID,FT.FEE_TYPE_ID,FD.FEE_SCHEDULE_INSTALLMENT_ID
+	  	  ) B ON B.FEE_TYPE_ID=FT.FEE_TYPE_ID AND B.CLASS_ID=CL.CLASS_ID and B.FEE_SCHEDULE_INSTALLMENT_ID=FSI.FEE_SCHEDULE_INSTALLMENT_ID
+		LEFT JOIN (
+			SELECT
+			FD.FEE_SCHEDULE_INSTALLMENT_ID,FD.FEE_TYPE_ID,CL.CLASS_ID,
+		    FRLI.STUDENT_ID,
+			SUM(IF(COLLECTION_TYPE LIKE '%CONCESSION%'  and ((R.STATUS = 'Active') or ( R.STATUS IN ('Fee_Category_Change','Transport_Route_Change') AND
+			(FRLI.RECEIPT_TYPE IN ('Collected',  'Refund_Initiated' , 'Refunded' ,'Partially_Refunded')))), -(FRLI.AMOUNT- FRLI.REFUNDED_AMOUNT),0)) as concessionAmount
+	   		FROM FEE_RECEIPT R
+            JOIN FEE_RECEIPT_LINE_ITEM FRLI ON FRLI.RECEIPT_ID=R.RECEIPT_ID
+            JOIN FEE_DUE FD ON FD.FEE_DUE_ID=FRLI.FEE_DUE_ID
+            JOIN ACADEMIC_STUDENT AST ON AST.STUDENT_ID = FD.STUDENT_ID AND AST.BRANCH_ID = FD.BRANCH_ID AND AST.ACADEMIC_SESSION_ID = FD.ACADEMIC_SESSION_ID
+            JOIN CLASS CL ON AST.CLASS_ID = CL.CLASS_ID AND AST.BRANCH_ID = CL.BRANCH_ID AND AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+            LEFT JOIN FEE_SCHEDULE_INSTALLMENT  FSI ON FSI.FEE_SCHEDULE_INSTALLMENT_ID=FD.FEE_SCHEDULE_INSTALLMENT_ID
+	        LEFT JOIN COLLECTION CLI ON (CLI.COLLECTION_ID = R.COLLECTION_ID)  AND (CLI.DUES_ACADEMIC_SESSION_ID = R.DUES_ACADEMIC_SESSION_ID) AND (CLI.BRANCH_ID = R.BRANCH_ID)
+            WHERE FD.BRANCH_ID=$P!{branchId}
+	  		AND FD.ACADEMIC_SESSION_ID IN ($P!{academicSessionId})
+           	AND (R.STATUS  = 'Active' or (R.STATUS  = 'Fee_Category_Change' AND R.RECEIPT_TYPE = 'Fee_Category_Change_Partially_Reallocated'))
+           	GROUP BY FRLI.DUES_ACADEMIC_SESSION_ID,CL.CLASS_ID,FSI.FEE_SCHEDULE_INSTALLMENT_ID,FD.FEE_TYPE_ID
+     	 )C ON C.FEE_SCHEDULE_INSTALLMENT_ID = FSI.FEE_SCHEDULE_INSTALLMENT_ID AND C.FEE_TYPE_ID= FT.FEE_TYPE_ID AND  C.CLASS_ID=CL.CLASS_ID
+     	 LEFT JOIN (
+			SELECT
+		    FRLI.STUDENT_ID,
+		    FRLI.ACADEMIC_SESSION_ID,
+		    FRLI.BRANCH_ID,
+		    CL.CLASS_ID,
+		    FFFDM.FEE_SCHEDULE_INSTALLMENT_ID,
+		    FD.FEE_TYPE_ID,
+		    SUM(IF(FRLI.COLLECTION_TYPE in ('FEE_TYPE_BASED_FINE','CHEQUE_BOUNCED_FINE','INSTALLMENT_BASED_FINE','FINE_WRITE_OFF') and ((R.STATUS = 'Active') or ( R.STATUS IN ('Fee_Category_Change','Transport_Route_Change')
+		    AND (FRLI.RECEIPT_TYPE IN ('Collected',  'Refund_Initiated' , 'Refunded' ,'Partially_Refunded')))), FRLI.AMOUNT - FRLI.REFUNDED_AMOUNT ,0)) AS fineAmount
+			FROM FEE_RECEIPT R
+			JOIN FEE_RECEIPT_LINE_ITEM FRLI ON FRLI.RECEIPT_ID=R.RECEIPT_ID
+			join ACADEMIC_STUDENT AST on AST.STUDENT_ID = FRLI.STUDENT_ID and AST.ACADEMIC_SESSION_ID = FRLI.ACADEMIC_SESSION_ID and AST.BRANCH_ID = FRLI.BRANCH_ID
+			join CLASS CL on AST.CLASS_ID = CL.CLASS_ID and AST.BRANCH_ID = CL.BRANCH_ID and AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+			left join FEE_DUE FD on FD.FEE_DUE_ID = FRLI.FEE_DUE_ID
+			left join FEE_FINE_FEE_DUE_MAPPING FFFDM on FRLI.FEE_FINE_FEE_DUE_MAPPING_ID = FFFDM.FEE_FINE_FEE_DUE_MAPPING_ID
+			WHERE FRLI.BRANCH_ID =$P!{branchId}
+			AND FRLI.DUES_ACADEMIC_SESSION_ID in ($P!{branchId})
+			AND (R.STATUS  = 'Active' or (R.STATUS  = 'Fee_Category_Change' AND R.RECEIPT_TYPE = 'Fee_Category_Change_Partially_Reallocated'))
+			group by CL.CLASS_ID, FFFDM.FEE_SCHEDULE_INSTALLMENT_ID, FD.FEE_TYPE_ID
+		)  D on D.CLASS_ID = CL.CLASS_ID AND D.FEE_SCHEDULE_INSTALLMENT_ID=FSI.FEE_SCHEDULE_INSTALLMENT_ID
+		LEFT JOIN (SELECT  STUDENT_ID, SUM(FINE) AS FINE, CLASS_ID, FEE_SCHEDULE_INSTALLMENT_ID, FEE_TYPE_ID FROM (
+				SELECT FFDM.STUDENT_ID ,( CASE WHEN SUM(FFDM.AMOUNT) IS NULL THEN 0 ELSE SUM(FFDM.AMOUNT) END )  AS FINE ,CL.CLASS_ID,
+				FSI.FEE_SCHEDULE_INSTALLMENT_ID, FD.FEE_TYPE_ID
+				FROM  FEE_FINE_FEE_DUE_MAPPING FFDM
+				join ACADEMIC_STUDENT AST on AST.STUDENT_ID = FFDM.STUDENT_ID and AST.ACADEMIC_SESSION_ID = FFDM.ACADEMIC_SESSION_ID and AST.BRANCH_ID = FFDM.BRANCH_ID
+				join CLASS CL on AST.CLASS_ID = CL.CLASS_ID and AST.BRANCH_ID = CL.BRANCH_ID and AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+				join FEE_DUE FD on FD.FEE_DUE_ID = FFDM.FEE_DUE_ID and FD.ACADEMIC_SESSION_ID = FFDM.ACADEMIC_SESSION_ID and FD.BRANCH_ID = FFDM.BRANCH_ID
+				join FEE_SCHEDULE_INSTALLMENT FSI on FD.FEE_SCHEDULE_INSTALLMENT_ID = FSI.FEE_SCHEDULE_INSTALLMENT_ID and FD.ACADEMIC_SESSION_ID = FSI.ACADEMIC_SESSION_ID and FD.BRANCH_ID = FSI.BRANCH_ID
+				WHERE FFDM.BRANCH_ID=$P{branchId}
+				AND FFDM.ACADEMIC_SESSION_ID  in ($P!{academicSessionId)
+				AND FFDM.FEE_DUE_ID IS NOT NULL
+				$P!{installmentIdCond}
+				$P!{feeTypeIdCond}
+				$P!{p1Cond}
+				$P!{p2Cond}
+				AND FFDM.STATUS in ('Pending', 'Pending_Against_Paid_Fee_Dues')
+				GROUP BY CL.CLASS_ID,FSI.FEE_SCHEDULE_INSTALLMENT_ID, FD.FEE_TYPE_ID
+			UNION
+				SELECT STUDENT_ID , SUM(FINE) AS FINE , CLASS_ID, FEE_SCHEDULE_INSTALLMENT_ID, FEE_TYPE_ID
+				FROM(
+					SELECT FFDM.STUDENT_ID ,CL.CLASS_ID,( CASE WHEN (FFDM.AMOUNT) IS NULL THEN 0 ELSE  (FFDM.AMOUNT) END )  AS FINE,
+					 FI.FEE_SCHEDULE_INSTALLMENT_ID, FI.FEE_TYPE_ID,FFDM.STATUS
+			 		 FROM FEE_FINE_FEE_DUE_MAPPING FFDM
+					 join ACADEMIC_STUDENT AST on AST.STUDENT_ID = FFDM.STUDENT_ID and AST.ACADEMIC_SESSION_ID = FFDM.ACADEMIC_SESSION_ID and AST.BRANCH_ID = FFDM.BRANCH_ID and AST.STATUS = 'Active'
+					 join CLASS CL on AST.CLASS_ID = CL.CLASS_ID and AST.BRANCH_ID = CL.BRANCH_ID and AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+					 join FEE_INSTALLMENT FI on FFDM.FEE_SCHEDULE_INSTALLMENT_ID = FI.FEE_SCHEDULE_INSTALLMENT_ID and FFDM.ACADEMIC_SESSION_ID = FI.ACADEMIC_SESSION_ID and FFDM.BRANCH_ID = FI.BRANCH_ID
+			 		 WHERE FFDM.BRANCH_ID= $P{branchId}
+			 		 AND FFDM.ACADEMIC_SESSION_ID in ( $P!{academicSessionId})
+			 		 AND FFDM.FEE_DUE_ID IS NULL
+			  		$P!{feeTypeIdCond2}
+			  		$P!{installmentIdCond2}
+					$P!{p1Cond}
+					$P!{p2Cond}
+					AND FFDM.STATUS in ('Pending', 'Pending_Against_Paid_Fee_Dues')
+			 		GROUP BY CL.CLASS_ID, FI.FEE_SCHEDULE_INSTALLMENT_ID, FI.FEE_TYPE_ID
+			 	)A
+			 GROUP BY CLASS_ID, FEE_SCHEDULE_INSTALLMENT_ID, FEE_TYPE_ID
+			 ) A
+			GROUP BY CLASS_ID, FEE_SCHEDULE_INSTALLMENT_ID, FEE_TYPE_ID
+		)FINE ON FINE.CLASS_ID=CL.CLASS_ID AND FINE.FEE_SCHEDULE_INSTALLMENT_ID=FSI.FEE_SCHEDULE_INSTALLMENT_ID AND FINE.FEE_TYPE_ID=FT.FEE_TYPE_ID
+		LEFT JOIN(
+					select FLI.STUDENT_ID , A.CLASS_ID, (CASE WHEN SUM(FLI.AMOUNT) IS NULL THEN 0 ELSE SUM(FLI.AMOUNT) END ) -  (CASE WHEN A.PAID_FINE IS NULL THEN 0 ELSE  A.PAID_FINE END )   AS CHEQUE_BOUNCE_FINE, FLI.ACADEMIC_SESSION_ID  from FEE_INVOICE_LINE_ITEM FLI
+				LEFT JOIN  (SELECT FP.STUDENT_ID ,  CL.CLASS_ID, SUM(FP.AMOUNT) AS PAID_FINE  FROM  FEE_PAYMENT FP
+				JOIN ACADEMIC_STUDENT AST ON (AST.STUDENT_ID = FP.STUDENT_ID ) AND ( FP.ACADEMIC_SESSION_ID = AST.ACADEMIC_SESSION_ID) AND (AST.BRANCH_ID = FP.BRANCH_ID )
+				JOIN CLASS CL ON AST.CLASS_ID = CL.CLASS_ID AND AST.BRANCH_ID = CL.BRANCH_ID AND AST.ACADEMIC_SESSION_ID = CL.ACADEMIC_SESSION_ID
+				JOIN  FEE_INVOICE_LINE_ITEM FLI ON(FLI.INVOICE_LINE_ITEM_ID = FP.INVOICE_LINE_ITEM_ID) AND ( FLI.BRANCH_ID = FP.BRANCH_ID ) AND ( FLI.ACADEMIC_SESSION_ID = FP.ACADEMIC_SESSION_ID)
+				JOIN FEE_DUE FD ON (FD.FEE_DUE_ID = FLI.FEE_DUE_ID) AND (FD.BRANCH_ID = FLI.BRANCH_ID) AND (FD.ACADEMIC_SESSION_ID = FLI.ACADEMIC_SESSION_ID)
+				WHERE FLI.BRANCH_ID = $P{branchId}
+				AND FLI.ACADEMIC_SESSION_ID in ( $P!{academicSessionId})
+				AND FLI.INVOICE_LINE_ITEM_TYPE  = 7 GROUP BY CL.CLASS_ID ) A ON (A.STUDENT_ID = FLI.STUDENT_ID)
+				WHERE FLI.BRANCH_ID  = $P{branchId}
+				AND FLI.ACADEMIC_SESSION_ID IN ($P!{academicSessionId})
+				AND INVOICE_LINE_ITEM_TYPE  = 7
+				GROUP BY A.CLASS_ID
+			) CBF on CBF.CLASS_ID = CL.CLASS_ID
+		WHERE L.BRANCH_ID=$P!{branchId}
+		AND AST.STATUS in ($P!{status}) AND L.ORIGINAL_DUE > 0
+		$P!{p1Cond}
+		$P!{p2Cond}
+		$P!{feeTypeIdCond}
+		$P!{installmentIdCond}
+		GROUP BY L.ACADEMIC_SESSION_ID,CL.CLASS_ID,FSI.FEE_SCHEDULE_INSTALLMENT_ID,FT.FEE_TYPE_ID
+		order by CL.SEQ_NO
+       ) A,
+	(select @r:=0) as u,(SELECT @STD_ID:=0) AS TEMP_STD_ID,(select @S_NO := 0) as SNO,(select @ADM_ID:=0) as TEMP_ADM_ID
+         $P!{p4Cond}
+         $P!{p5Cond}]]>
+	</queryString>
+	<field name="ADM_NO" class="java.lang.String"/>
+	<field name="STUDENT_NAME" class="java.lang.String"/>
+	<field name="CLASS_SECTION" class="java.lang.String"/>
+	<field name="PRIMARY_CONTACT" class="java.lang.String"/>
+	<field name="BILLED" class="java.lang.Double"/>
+	<field name="PAID" class="java.lang.Double"/>
+	<field name="FINE_AMOUNT" class="java.lang.Double"/>
+	<field name="CONCESSION_AMOUNT" class="java.lang.Double"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="DURATION" class="java.lang.String"/>
+	<field name="CLASS_SEQ_NO" class="java.lang.Integer"/>
+	<field name="FEE_TYPE_NAME" class="java.lang.String"/>
+	<field name="INSTALLMENT_NAME" class="java.lang.String"/>
+	<field name="RECEIPT_NUMBER" class="java.lang.String"/>
+	<field name="PAYMENT_DATE" class="java.lang.String"/>
+	<field name="DUE" class="java.lang.Double"/>
+	<field name="SECTION_NAME" class="java.lang.String"/>
+	<field name="SEQ" class="java.lang.Integer"/>
+	<field name="PRIMARY_CONTACT_NUMBER" class="java.lang.String"/>
+	<field name="FEE_CATEGORY" class="java.lang.String"/>
+	<field name="PAID_FINE" class="java.lang.Double"/>
+	<field name="DUE_FINE_AMOUNT" class="java.lang.Double"/>
+	<field name="DUE_FINE" class="java.lang.Double"/>
+	<field name="CBF_FINE_AMOUNT" class="java.lang.Double"/>
+	<field name="CBF_FINE" class="java.lang.Double"/>
+	<field name="CLASS_NAME" class="java.lang.String"/>
+	<sortField name="DURATION"/>
+	<sortField name="CLASS_SEQ_NO"/>
+	<sortField name="SECTION_NAME"/>
+	<sortField name="ADM_NO"/>
+	<sortField name="STUDENT_NAME"/>
+	<variable name="Total_billed" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{BILLED}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="total_paid" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{PAID}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="due" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{DUE}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="161" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{format}.equalsIgnoreCase( "pdf" ) || $P{format}.equalsIgnoreCase( "excel" )]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="80" y="0" width="1361" height="60" forecolor="#000000" uuid="2f34e3db-5f1b-4a47-8a7d-5d159c0f029f">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box leftPadding="10" bottomPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{schoolName}.toUpperCase() + "\n" + "<font  size='9'>" + $P{schoolAddress} + "</font>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="60" width="1441" height="50" backcolor="#EFEFEF" uuid="93117dda-b940-49b4-81e0-08adf8e7b7d7">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<box leftPadding="20">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="15" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{fee_type_wise}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" isLazy="true" onErrorType="Icon">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="70" height="60" uuid="67adb4b0-2fb6-4968-b300-61b1aabe4d8e">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{branchLogo} == null ? "" : $P{branchLogo}.trim()]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyy HH:mm a" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="110" width="1441" height="51" backcolor="#EFEFEF" uuid="bbbf4560-bd84-467a-a408-e3799e2bcce6">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="20" rightPadding="5">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{class_colon} + " " +  (("'-1'".equals($P{classId})) ? "All" : ($P{classNames}.replaceAll("'","")))+" "  + $R{or_section_colon}+" " +  (("'-1'".equals($P{sectionId})) ? "All" : ($F{SECTION_NAME}.replaceAll("'","")))+" "     + $R{or_academic_session_colon}+" " + ($P{sessionNames}.replaceAll("'","")) + $R{or_status_colon}+" " + ($P{status}.replaceAll("'","")) + $R{or_fee_type_colon}+" " + ($P{feeTypesName}.replaceAll("'",""))]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="162" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{format}.equalsIgnoreCase( "pdf" ) || $P{format}.equalsIgnoreCase( "excel" )]]></printWhenExpression>
+			<textField pattern="dd-MMM-yyyy HH:mm a" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="142" width="1441" height="20" backcolor="#FFFFFF" uuid="82714982-4831-434b-a62c-3a5b34793ef0">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box leftPadding="10" rightPadding="20">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{fee_typewise_paiddue_report}+" " + $P{generatedOn} + (($P{generatedBy} == null)?"":($R{generated_by}+" "   + $P{generatedBy}))+$R{page}+" "  +$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MMM-yyyy HH:mm a" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="2138" height="142" backcolor="#FFFFFF" uuid="ab72cbea-3bd9-4c34-b97b-c969b0a10556">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} == 1]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Billed = Fee Due Amount +Paid Fee Due Amount -Concession" +
+					"\n" +
+					"Paid = Paid Fee Due Amount - concession" +
+					"\n" +
+					"Due = Fee Due Amount - Concession " +
+					"\n" +
+					"Paid Fine = Paid Fine Amount" +
+					"\n" +
+					"Due Fine = Due Fine Amount + Fine Write Off Amount" +
+					"\n"+
+					"Paid Concession = Paid Fee Due Amount's Concession" +
+					"\n" +
+					"Cheque Bounce Fine =Cheque Bounce Fine Amount"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="135" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="2584" height="135" uuid="ec04db42-3baf-433b-9858-4d32f46652bf"/>
+				<crosstabParameter name="mantissaValue">
+					<parameterValueExpression><![CDATA[$P{mantissaLength}]]></parameterValueExpression>
+				</crosstabParameter>
+				<crosstabDataset isDataPreSorted="true"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<textField>
+							<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="0" height="0" isPrintWhenDetailOverflows="true" backcolor="#EFEFEF" uuid="fb2ca985-5f65-4563-a638-932c7c9f56bf"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement verticalAlignment="Middle">
+								<font size="5"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{seq}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="81" y="0" width="71" height="84" isPrintWhenDetailOverflows="true" backcolor="#EFEFEF" uuid="2da17e2b-ada0-4a39-91b1-43540c39202d"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="10" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{paid_fine}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="81" height="84" isPrintWhenDetailOverflows="true" backcolor="#EFEFEF" uuid="584528e3-eacd-4c39-b94a-f75876d28ab5"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{class_name}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="151" y="0" width="70" height="84" isPrintWhenDetailOverflows="true" backcolor="#EFEFEF" uuid="8f072e4d-945c-4a8e-9adc-0d50ac7cbf00"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="10" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$R{due_fine}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="adm_no" width="151" totalPosition="End" headerPosition="Stretch">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{ADM_NO}]]></bucketExpression>
+						<orderByExpression><![CDATA[$V{seq_measure}]]></orderByExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true">
+								<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="81" y="0" width="70" height="25" isPrintWhenDetailOverflows="true" uuid="dbfcf54e-6004-490e-a5aa-18516be6a7f7"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{finemeasure}==null?0.0:$V{finemeasure}]]></textFieldExpression>
+							</textField>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="81" height="25" isPrintWhenDetailOverflows="true" uuid="833a1dd8-21c6-4731-b249-5cd426d8e1c0"/>
+								<box>
+									<pen lineWidth="0.75"/>
+									<topPen lineWidth="0.75"/>
+									<leftPen lineWidth="0.75"/>
+									<bottomPen lineWidth="0.75"/>
+									<rightPen lineWidth="0.75"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{classNameMeasure}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#005FB3" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="81" height="25" uuid="598a4185-1910-4929-8fb2-0031460dc759"/>
+								<box rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="9" isBold="true" isStrikeThrough="false"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement key="0" style="Crosstab Data Text" x="81" y="0" width="70" height="25" uuid="e4c7079a-f3d6-4357-aed5-99cfc31c0ee4"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{totalfinemeasure}]]></textFieldExpression>
+								<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement key="0" style="Crosstab Data Text" x="151" y="0" width="70" height="25" uuid="e4c7079a-f3d6-4357-aed5-99cfc31c0ee4"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{totalduefinemeasure}]]></textFieldExpression>
+								<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="INSTALLMENT_NAME" height="30" totalPosition="End" headerPosition="Stretch">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{INSTALLMENT_NAME}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents>
+							<textField isStretchWithOverflow="true">
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="270" height="30" isPrintWhenDetailOverflows="true" backcolor="#EFEFEF" uuid="3a2054c9-af82-4994-935b-05665fa41652"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{INSTALLMENT_NAME}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="240" height="29" backcolor="#EFEFEF" uuid="5242d44a-e83f-4a1b-8b92-8448172e6cb6"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="29" width="60" height="55" backcolor="#EFEFEF" uuid="0343f076-02c2-4c63-bd55-4d09e59890cb"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total_billed}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="60" y="29" width="60" height="55" backcolor="#EFEFEF" uuid="0343f076-02c2-4c63-bd55-4d09e59890cb"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total_paid}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="120" y="29" width="60" height="55" backcolor="#EFEFEF" uuid="0343f076-02c2-4c63-bd55-4d09e59890cb"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total_due}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="180" y="29" width="60" height="55" backcolor="#EFEFEF" uuid="0343f076-02c2-4c63-bd55-4d09e59890cb"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{total_concession}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="FEE_TYPE_NAME" height="54">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{FEE_TYPE_NAME}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="270" height="24" backcolor="#EFEFEF" uuid="5242d44a-e83f-4a1b-8b92-8448172e6cb6"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{FEE_TYPE_NAME}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="24" width="72" height="30" backcolor="#EFEFEF" uuid="0343f076-02c2-4c63-bd55-4d09e59890cb"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{billed}]]></textFieldExpression>
+							</textField>
+							<textField isBlankWhenNull="true">
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="210" y="24" width="60" height="30" backcolor="#EFEFEF" uuid="16fd81f6-1420-4011-a872-7fb2f58e34e3"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{paid_concession}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="142" y="24" width="68" height="30" backcolor="#EFEFEF" uuid="58b2b34a-8b47-4c9d-b214-968a06205e6f"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{due}]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="72" y="24" width="70" height="30" backcolor="#EFEFEF" uuid="c9b31708-202a-4aeb-9b4d-b8ae635ba27e"/>
+								<box leftPadding="5" rightPadding="5">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.5"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="10" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{paid}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="BILLEDMeasure" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{BILLED}]]></measureExpression>
+				</measure>
+				<measure name="paid" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{PAID}]]></measureExpression>
+				</measure>
+				<measure name="due" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{DUE}]]></measureExpression>
+				</measure>
+				<measure name="measure1" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{BILLED}]]></measureExpression>
+				</measure>
+				<measure name="measure2" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{PAID}]]></measureExpression>
+				</measure>
+				<measure name="measure3" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{DUE}]]></measureExpression>
+				</measure>
+				<measure name="receipts" class="java.lang.String">
+					<measureExpression><![CDATA[$F{RECEIPT_NUMBER}]]></measureExpression>
+				</measure>
+				<measure name="payment_date" class="java.lang.String">
+					<measureExpression><![CDATA[$F{PAYMENT_DATE}]]></measureExpression>
+				</measure>
+				<measure name="seq_measure" class="java.lang.Integer">
+					<measureExpression><![CDATA[$F{SEQ}]]></measureExpression>
+				</measure>
+				<measure name="finemeasure" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{FINE_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="concessionmeasure" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{CONCESSION_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="totalfinemeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{PAID_FINE}]]></measureExpression>
+				</measure>
+				<measure name="totalconcessionmeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{CONCESSION_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="BilledTotalMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{BILLED}]]></measureExpression>
+				</measure>
+				<measure name="paidTotal" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{PAID}]]></measureExpression>
+				</measure>
+				<measure name="dueTotal" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{DUE}]]></measureExpression>
+				</measure>
+				<measure name="totalFine" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{FINE_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="totalConcession" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{CONCESSION_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="duefinemeasure" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{DUE_FINE_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="totalduefinemeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{DUE_FINE}]]></measureExpression>
+				</measure>
+				<measure name="cbffinemeasure" class="java.lang.Double">
+					<measureExpression><![CDATA[$F{CBF_FINE_AMOUNT}]]></measureExpression>
+				</measure>
+				<measure name="totalcbffinemeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{CBF_FINE}]]></measureExpression>
+				</measure>
+				<measure name="classNameMeasure" class="java.lang.String">
+					<measureExpression><![CDATA[$F{CLASS_NAME}]]></measureExpression>
+				</measure>
+				<crosstabCell width="270" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="72" height="25" isPrintWhenDetailOverflows="true" uuid="8dc31293-0f54-4ca5-872d-e61dc1b84282"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{BILLEDMeasure}==null?0.0:$V{BILLEDMeasure}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="72" y="0" width="70" height="25" isPrintWhenDetailOverflows="true" uuid="fe2677d0-2ce0-48ac-a0e7-ffaa9fdb3598"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{paid}==null?0.0:$V{paid}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="142" y="0" width="68" height="25" isPrintWhenDetailOverflows="true" uuid="93d63d97-2c04-427a-b9fb-b790e2d00e80"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{due}==null?0.0:$V{due}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField pattern="" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="210" y="0" width="60" height="25" uuid="874dd8ae-6cb5-43b1-993d-68b6dcfd05cf"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{concessionmeasure}==null?0.0:$V{concessionmeasure}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="270" height="25" rowTotalGroup="adm_no">
+					<cellContents backcolor="#005FB3" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="0" y="0" width="72" height="25" uuid="c3b50d88-cd33-4f94-9649-b911ebe99bc0"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure1}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="72" y="0" width="70" height="25" uuid="15df50e8-12f7-4540-babf-32f92e06adfc"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure2}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="142" y="0" width="68" height="25" uuid="383bfde0-9e7a-497b-87ff-1ddf259167bb"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure3}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="210" y="0" width="60" height="25" uuid="2fc33a10-26bb-4005-87db-c765cdeb0e7f"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{totalconcessionmeasure}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="240" height="25" columnTotalGroup="INSTALLMENT_NAME">
+					<cellContents mode="Opaque">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="25" isPrintWhenDetailOverflows="true" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{BilledTotalMeasure}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="60" y="0" width="60" height="25" isPrintWhenDetailOverflows="true" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{paidTotal}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="120" y="0" width="60" height="25" isPrintWhenDetailOverflows="true" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{dueTotal}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="180" y="0" width="60" height="25" isPrintWhenDetailOverflows="true" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{totalConcession}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="240" height="25" rowTotalGroup="adm_no" columnTotalGroup="INSTALLMENT_NAME">
+					<cellContents mode="Opaque">
+						<textField>
+							<reportElement key="0" style="Crosstab Data Text" x="0" y="0" width="60" height="25" forecolor="#000000" uuid="bbff1438-5bf6-458b-adf4-f8c1b40c1873"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure1_adm_no_ALL}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField>
+							<reportElement key="0" style="Crosstab Data Text" x="60" y="0" width="60" height="25" forecolor="#000000" uuid="bbff1438-5bf6-458b-adf4-f8c1b40c1873"/>
+							<box>
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure2_adm_no_ALL}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="120" y="0" width="60" height="25" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{measure3_adm_no_ALL}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="0" style="Crosstab Data Text" x="180" y="0" width="60" height="25" uuid="f42457a4-1bbe-4a77-8ab5-35ce9bd0b13a"/>
+							<box leftPadding="5" rightPadding="5">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.5"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{totalconcessionmeasure_adm_no_ALL}]]></textFieldExpression>
+							<patternExpression><![CDATA[($P{mantissaValue}.equalsIgnoreCase("3"))?"#,##0.000":"#,##0.00"]]></patternExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

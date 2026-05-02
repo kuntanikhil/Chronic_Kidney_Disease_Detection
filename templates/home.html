@@ -1,0 +1,382 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1rem;
+  }
+
+  .hero-banner {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: clamp(1.2rem, 2vw, 2rem);
+    background: linear-gradient(160deg, #083348 0%, #0f5f71 50%, #1aa58e 100%);
+    color: #e8fcff;
+    min-height: 320px;
+    animation: riseIn 0.7s ease;
+  }
+
+  .hero-banner::before,
+  .hero-banner::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-banner::before {
+    width: 220px;
+    height: 220px;
+    background: rgba(255, 255, 255, 0.1);
+    right: -70px;
+    top: -80px;
+  }
+
+  .hero-banner::after {
+    width: 160px;
+    height: 160px;
+    background: rgba(255, 208, 168, 0.25);
+    right: 12px;
+    bottom: -60px;
+  }
+
+  .hero-title {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.9rem);
+    font-family: "Space Grotesk", sans-serif;
+    line-height: 1.08;
+    max-width: 18ch;
+  }
+
+  .hero-copy {
+    margin: 1rem 0;
+    max-width: 56ch;
+    line-height: 1.7;
+    color: #d7f6fc;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .stats-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .stat-card {
+    padding: 1rem 1.1rem;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(12, 55, 73, 0.08);
+    animation: riseIn 0.8s ease;
+  }
+
+  .stat-value {
+    margin: 0;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.6rem;
+    color: #0d465b;
+  }
+
+  .stat-label {
+    margin: 0.25rem 0 0;
+    color: #315262;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .feature-grid {
+    margin-top: 1.1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
+
+  .feature-card {
+    background: #ffffffd9;
+    border: 1px solid rgba(9, 56, 71, 0.09);
+    border-radius: 18px;
+    padding: 1rem;
+    box-shadow: 0 14px 36px rgba(13, 54, 74, 0.1);
+    animation: riseIn 0.9s ease;
+  }
+
+  .feature-card h3 {
+    font-family: "Space Grotesk", sans-serif;
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  .feature-card p {
+    margin: 0;
+    color: #355668;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  .algorithm-tile {
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid rgba(12, 60, 77, 0.14);
+    background: linear-gradient(135deg, #0b3346 0%, #0a5365 55%, #128a78 100%);
+    color: #e9fcff;
+    padding: 1.15rem;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .dataset-tile {
+    margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid rgba(20, 71, 52, 0.16);
+    background: linear-gradient(130deg, #24422f 0%, #22624c 55%, #2f8c6e 100%);
+    color: #e9fff7;
+    padding: 1.15rem;
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .dataset-tile::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    left: -70px;
+    bottom: -80px;
+    pointer-events: none;
+  }
+
+  .algorithm-tile::after {
+    content: "";
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    right: -60px;
+    top: -65px;
+    pointer-events: none;
+  }
+
+  .algorithm-title {
+    margin: 0 0 0.4rem;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
+  }
+
+  .algorithm-copy {
+    margin: 0;
+    line-height: 1.65;
+    color: #ccf4fa;
+  }
+
+  .algorithm-points {
+    margin: 0.8rem 0 0;
+    padding-left: 1.1rem;
+    color: #ddf7fb;
+  }
+
+  .algorithm-points li {
+    margin-bottom: 0.3rem;
+  }
+
+  .algo-visual {
+    border-radius: 14px;
+    width: 100%;
+    max-height: 210px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 14px 24px rgba(0, 0, 0, 0.22);
+  }
+
+  .algo-visual-stack {
+    position: relative;
+    min-height: 210px;
+  }
+
+  .algo-visual-stack .algo-visual {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    opacity: 0;
+    animation: visualSwap 14s infinite;
+  }
+
+  .algo-visual-stack .algo-visual:first-child {
+    opacity: 1;
+    animation-delay: 0s;
+  }
+
+  .algo-visual-stack .algo-visual:last-child {
+    animation-delay: 7s;
+  }
+
+  @keyframes visualSwap {
+    0% { opacity: 0; }
+    8% { opacity: 1; }
+    42% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  .cta-panel {
+    margin-top: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-note {
+    font-weight: 600;
+    color: #214758;
+  }
+
+  @keyframes riseIn {
+    from {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .algorithm-tile {
+      grid-template-columns: 1fr;
+    }
+
+    .dataset-tile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="hero-grid">
+  <article class="hero-banner">
+    <h1 class="hero-title">Early Chronic Kidney Risk Insights in Under a Minute</h1>
+    <p class="hero-copy">
+      This screening interface converts key clinical parameters into a machine-learning risk output.
+      It is designed for fast awareness, not medical diagnosis.
+    </p>
+    <div class="hero-actions">
+      <a class="button-primary" href="{{ url_for('kidneyPage') }}">Start Kidney Screening</a>
+      <a class="button-secondary" href="https://www.mayoclinic.org/diseases-conditions/chronic-kidney-disease/symptoms-causes/syc-20354521" target="_blank" rel="noopener noreferrer">Know Symptoms</a>
+    </div>
+  </article>
+
+  <aside class="stats-panel">
+    <article class="stat-card">
+      <p class="stat-value">18</p>
+      <p class="stat-label">Clinical parameters analyzed per prediction</p>
+    </article>
+    <article class="stat-card">
+      <p class="stat-value">2-class</p>
+      <p class="stat-label">Output: Kidney disease risk or healthy pattern</p>
+    </article>
+    <article class="stat-card">
+      <p class="stat-value">Responsive</p>
+      <p class="stat-label">Optimized for mobile and desktop workflow</p>
+    </article>
+  </aside>
+</section>
+
+<section class="surface-card" style="margin-top: 1rem;">
+  <h2 class="section-title">How This Project Helps</h2>
+  <p class="muted">
+    Early screening matters because CKD can progress silently. This major project combines user input,
+    preprocessing, and a trained model to support initial risk awareness for patients and learners.
+  </p>
+
+  <div class="feature-grid">
+    <article class="feature-card">
+      <h3>Data-Driven Input</h3>
+      <p>Each field maps to parameters used during model training, including blood chemistry and symptom markers.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Transparent Parameters</h3>
+      <p>Every input in the form is labeled with expected range or allowed encoded value for easier and safer entry.</p>
+    </article>
+    <article class="feature-card">
+      <h3>Fast Risk Output</h3>
+      <p>Submit once and receive an immediate predicted class with contextual guidance on next steps.</p>
+    </article>
+  </div>
+
+  <article class="algorithm-tile">
+    <div>
+      <h3 class="algorithm-title">Algorithms Used in This Major Project</h3>
+      <p class="algorithm-copy">
+        Explore the complete workflow of each algorithm, why it was selected, and where it contributes in the prediction pipeline.
+      </p>
+      <ul class="algorithm-points">
+        <li>Random Forest for robust tabular classification</li>
+        <li>XGBoost for boosted decision boundaries</li>
+        <li>Baseline models for comparison and validation</li>
+      </ul>
+      <a class="button-primary" href="{{ url_for('algorithmsPage') }}">View Full Algorithm Details</a>
+    </div>
+    <div class="algo-visual-stack">
+      <img class="algo-visual" src="{{ url_for('static', filename='visuals/xgboost.svg') }}" alt="Machine learning model optimization visual">
+      <img class="algo-visual" src="{{ url_for('static', filename='visuals/random_forest.svg') }}" alt="Machine learning ensemble visual">
+    </div>
+  </article>
+
+  <article class="dataset-tile">
+    <div>
+      <h3 class="algorithm-title">Dataset Used in This Project</h3>
+      <p class="algorithm-copy">
+        Learn about the UCI CKD dataset source, structure, metadata, and why it is suitable for kidney disease classification.
+      </p>
+      <ul class="algorithm-points">
+        <li>UCI source credibility and licensing details</li>
+        <li>Instances, features, labels, and missing values summary</li>
+        <li>How this dataset maps to our model and form pipeline</li>
+      </ul>
+      <a class="button-primary" href="{{ url_for('datasetPage') }}">View Dataset Details</a>
+    </div>
+    <img class="algo-visual" src="{{ url_for('static', filename='visuals/uci_dataset.svg') }}" alt="UCI CKD dataset overview">
+  </article>
+
+  <div class="cta-panel">
+    <p class="cta-note">Tip: Use the sample values in the screening page to learn valid input patterns.</p>
+    <a class="button-primary" href="{{ url_for('kidneyPage') }}">Open Screening Form</a>
+  </div>
+</section>
+
+{% endblock %}

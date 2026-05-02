@@ -1,0 +1,6 @@
+def largest(arr,k):
+    arr.sort(reverse=True)
+    return arr[k-1]
+arr=list(map(int,input().split()))
+k=int(input())
+print(Kth_largest(arr,k))

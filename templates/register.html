@@ -1,0 +1,93 @@
+{% extends 'main.html' %}
+{% block page_styles %}
+<style>
+  .auth-wrap {
+    min-height: 62vh;
+    display: grid;
+    place-items: center;
+  }
+
+  .auth-card {
+    width: min(560px, 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(12, 55, 73, 0.12);
+    background: #ffffffe6;
+    box-shadow: var(--shadow);
+    padding: clamp(1rem, 2.2vw, 1.5rem);
+  }
+
+  .auth-card h1 {
+    margin: 0 0 0.35rem;
+    font-family: "Space Grotesk", sans-serif;
+    color: #12364a;
+  }
+
+  .auth-card p {
+    margin: 0 0 0.95rem;
+    color: #3a5868;
+  }
+
+  .auth-grid {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .auth-grid label {
+    font-weight: 700;
+    color: #15384a;
+    font-size: 0.92rem;
+  }
+
+  .auth-grid input {
+    width: 100%;
+    border: 1px solid rgba(14, 63, 84, 0.22);
+    border-radius: 10px;
+    padding: 0.68rem 0.74rem;
+    font-size: 0.95rem;
+  }
+
+  .auth-grid input:focus {
+    outline: 2px solid rgba(0, 159, 143, 0.3);
+    border-color: rgba(0, 127, 115, 0.65);
+  }
+
+  .auth-actions {
+    margin-top: 0.9rem;
+    display: flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <article class="auth-card">
+    <h1>Create Account</h1>
+    <p>Register once to keep a secure report history for future doctor consultations.</p>
+    <form method="POST" action="{{ url_for('registerPage') }}">
+      <div class="auth-grid">
+        <div>
+          <label for="full_name">Full Name</label>
+          <input type="text" id="full_name" name="full_name" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" minlength="6" required>
+        </div>
+        <div>
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" minlength="6" required>
+        </div>
+      </div>
+      <div class="auth-actions">
+        <button type="submit" class="button-primary">Register</button>
+        <a class="button-secondary" href="{{ url_for('loginPage') }}">Already have an account?</a>
+      </div>
+    </form>
+  </article>
+</section>
+{% endblock %}
